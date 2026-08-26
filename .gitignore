@@ -1,0 +1,18 @@
+# Local environments and secrets
+.venv/
+.env
+.env.*
+
+# Non-versioned model/runtime state
+models/
+runtimes/
+runtime-state/
+artifacts/
+cache/
+
+# Bounded run outputs and generated query indexes stay outside Git
+*.log
+*.jsonl
+*.sqlite
+*.duckdb
+__pycache__/

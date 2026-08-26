@@ -1,0 +1,18 @@
+# One repository text format across Windows and Linux/WSL.
+# Add a CRLF exception only if a future Windows-only tool demonstrably requires it.
+* text=auto eol=lf
+
+# Never attempt text conversion for model, data, archive, or media artifacts.
+*.gguf        -text
+*.safetensors -text
+*.parquet     -text
+*.sqlite      -text
+*.duckdb      -text
+*.png         -text
+*.jpg         -text
+*.jpeg        -text
+*.gif         -text
+*.webp        -text
+*.pdf         -text
+*.zip         -text
+*.gz          -text
