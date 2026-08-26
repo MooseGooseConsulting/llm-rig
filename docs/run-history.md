@@ -52,6 +52,11 @@ local spool. Retrying is idempotent. The host must not delete the staged artifac
 until it has a durable receipt for both the Notion Run and shared artifacts. A
 locally successful benchmark is not a shared or reported result until then.
 
+Execution failure and publication failure are different. A failed benchmark
+process may be published with execution status `failed` and its validator result
+recorded. A failed publication attempt creates no shared Run record and leaves
+the local stage `pending-publication`.
+
 Do not store every high-frequency telemetry sample as a Notion row. Retain raw
 AIPerf telemetry in the shared artifact bundle and publish useful aggregates,
 sample coverage, and artifact pointers. If future analytical queries outgrow

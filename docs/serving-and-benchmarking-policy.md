@@ -178,6 +178,11 @@ reconstructed run may be published with that actual state. It cannot support a
 comparison unless the named benchmark validator succeeded and the compared runs
 used the same versioned definition.
 
+Execution status and publication status are separate fields. A benchmark
+process that fails may be published as an execution failure so the exact command
+and output are retained. A publication attempt that fails creates no shared Run
+record; its local stage remains `pending-publication` until a retry succeeds.
+
 ## Publication and shared authority
 
 The runner does not write a historical database. A separate publisher moves a
