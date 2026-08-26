@@ -44,9 +44,10 @@ Fetch the relevant stable hub before planning or documentation work:
     including target, environment, attempts, measurements, failures, conclusions,
     unknowns, and raw-artifact links.
   - [**Serving Recipes database**](https://app.notion.com/p/f0c97a9ada644a46a0813f5e2fa03337)
-    (`f0c97a9a-da64-4a46-a081-3f5e2fa03337`) — exact runnable configurations,
-    provenance, hardware/runtime context, benchmark profile, measured speed and
-    headroom, limitations, and lifecycle status.
+    (`f0c97a9a-da64-4a46-a081-3f5e2fa03337`) — exact runnable configurations and
+    explicitly labeled historical configuration arms, with provenance,
+    hardware/runtime context, benchmark profile, measured speed and headroom,
+    limitations, and lifecycle status.
 
 Use an existing destination whenever it fits. Create a new stable page only for a
 genuinely distinct durable subject after checking the hubs. Notion holds agent
