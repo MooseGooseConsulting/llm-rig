@@ -190,7 +190,7 @@ completed staging directory into the shared system through one outbound HTTPS
 path suitable for a Vast.ai guest or any other remote serving host. The
 publisher validates the record, stores the artifacts, idempotently upserts the
 Notion Run, and returns a publication receipt. The detailed transport, retry,
-and receipt contract lives in [Run publication and authority](run-history.md).
+and receipt contract lives in the [Shared results system specification](shared-results-system-spec.md).
 
 The publication endpoint's hosting provider, URL, Notion schema, artifact-store
 provider, retention policy, and credential route are unselected implementation

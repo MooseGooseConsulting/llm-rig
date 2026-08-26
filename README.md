@@ -15,7 +15,6 @@ must satisfy; it must not be read as proof that they are deployed.
 - [Architecture](docs/architecture.md) — the canonical project rules and repository boundary.
 - [Serving and benchmarking policy](docs/serving-and-benchmarking-policy.md) — the canonical serving, AIPerf, monitoring, persistence, and reporting contract.
 - [Inference hardware](docs/inference-hardware.md) — the available hardware surfaces and the question each one needs to answer.
-- [Run publication and authority](docs/run-history.md) — how a staged run becomes one shared Notion record backed by shared raw artifacts.
 - [Shared results system specification](docs/shared-results-system-spec.md) — the concrete API, objects, publication transaction, query contract, and first end-to-end acceptance test.
 - [Agent instructions](AGENTS.md) — the short behavioral contract that remains safe in agent context.
 
@@ -27,7 +26,6 @@ must satisfy; it must not be read as proof that they are deployed.
 | [Requirements](docs/requirements.md) | Product mission, shipped capabilities, owner decisions, and open product decisions | Implementation architecture or protocol details |
 | [Architecture](docs/architecture.md) | Invariants, authority boundaries, and repository scope | Backend procedures or data-field detail |
 | [Serving and benchmarking policy](docs/serving-and-benchmarking-policy.md) | Serving profiles, AIPerf rules, executable benchmark requirements, monitoring separation, and publication requirements | Publication transport detail or hardware inventory |
-| [Run publication and authority](docs/run-history.md) | Run shape, remote publication transport, retry semantics, and the one shared history | Benchmark selection or serving behavior |
 | [Shared results system specification](docs/shared-results-system-spec.md) | Shipped shared-results API, canonical objects, publication/query protocol, and acceptance criteria | Recipe selection or benchmark-standard design |
 | [Inference hardware](docs/inference-hardware.md) | Surface inventory and current hardware questions | Launch recipes |
 | [GTX 1080 Ti economics](docs/gtx-1080-ti-economics.md) | One scoped hardware decision | General serving policy |
