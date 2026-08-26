@@ -1,6 +1,11 @@
 # Architecture
 
-This is the single canonical source for LLM Rig's invariant project rules. Other files may describe a hardware surface, a source, a profile, or a benchmark, but they do not redefine these rules.
+This is the single canonical source for LLM Rig's invariant design rules. The
+product requirements in [LLM Rig product requirements](requirements.md) govern
+what the system must ship; this document defines the architecture used to
+satisfy those requirements. Other files may describe a hardware surface, a
+source, a profile, or a benchmark, but they do not redefine the requirements or
+these design rules.
 
 ## Invariants
 
@@ -17,6 +22,8 @@ This is the single canonical source for LLM Rig's invariant project rules. Other
 
 | Thing | Lives here? | Purpose |
 | --- | --- | --- |
+| Investigation request | Yes | Deployment goal, serving question, success condition, and the missing fact the work is intended to resolve |
+| Recipe research and derivation | Yes | Current source findings, prior-result query, candidate applicability, and explicit derivation decisions |
 | Surface inventory | Yes | Known hardware shape, role, and the next question for each serving surface |
 | Source record | Yes, when needed | Direct source URL, revision/date, verbatim recipe, and status |
 | Serving profile | Yes, when needed | Exact artifact, runtime build, hardware surface, intent, launch command, and local deltas |
@@ -40,11 +47,16 @@ those fields.
 ## Run composition
 
 ~~~text
-current source record + named surface + serving profile + executable AIPerf definition
+deployment goal or serving question
+    + query of accepted prior Runs
+    + targeted current source research
+    -> published recipe or explicitly derived local candidate
+    -> host-bound serving profile + declared benchmark standard
     -> local staged run.json + bounded raw output outside Git
-    -> outbound HTTPS publication
+    -> Shared Results API publication
     -> shared artifact object + canonical Notion Run record
     -> related Notion Investigation
+    -> next recipe or deployment decision
 ~~~
 
 The repository does not provide generic SGLang, llama.cpp, vLLM, or model-family recipes. A source record records a precise published recipe when one exists. A local profile explains the concrete question it is designed to answer when one does not.

@@ -1,188 +1,137 @@
-# LLM Rig requirements
+# LLM Rig product requirements
 
-This is the living owner-requirements record for LLM Rig. It answers two
-questions before architecture or implementation is allowed to answer them:
+This document records what LLM Rig must ship and the owner decisions that
+govern that product. Architecture and implementation specifications explain how
+the requirements are satisfied; they do not create additional product goals.
 
-1. What does the repository need to ship?
-2. What qualities and constraints must the shipped system preserve?
+## Document maintenance
 
-When this document conflicts with architecture or policy, the conflict must be
-surfaced and the downstream document reconciled. Architecture describes how
-confirmed requirements are satisfied; it does not invent the product mission.
-
-## Maintenance rule
-
-- Record an owner requirement in this document during the conversation in
-  which it is stated.
-- Keep explicit owner requirements separate from agent interpretations.
-- Mark unresolved interpretations and design choices as open; do not promote
-  them into invariants.
-- Preserve superseded requirements with a short reason rather than silently
-  deleting them.
-- Use one document for the requirements ledger and dated intake notes. Do not
-  create a second scratch file that can diverge from this one.
+- Record owner requirements and corrections during the conversation in which
+  they are stated.
+- Keep unresolved interpretations under **Open decisions**, not in the product
+  requirements.
+- Remove mistaken or irrelevant draft requirements from the live requirements;
+  Git retains their history.
+- Keep dated intake notes in this document rather than creating a parallel
+  scratch file.
 
 ## Mission candidate — awaiting owner confirmation
 
-LLM Rig should ship an investigation system that can take a deployment goal or
-serving question; inspect prior measured results and current upstream sources;
-identify the smallest decision-relevant knowledge gaps; produce a sourced
-candidate recipe; stand up or target the serving endpoint; run a meaningful
-AIPerf benchmark; validate and normalize the result; and publish the
-measurements, artifacts, and human-readable investigation into one shared
-destination. Each completed result becomes input to the next recipe decision.
+LLM Rig should ship a working investigation system that turns a deployment goal
+or serving question into a researched and sourced recipe, executes an existing
+benchmark standard against it, records what actually happened, and returns the
+result and human report to one shared system. Accumulated results then determine
+what is worth researching or running next.
 
-The repository is not presumed to be the live serving control plane. It owns
-the portable product needed to produce comparable serving measurements and get
-them back from any supported execution environment. The ownership boundary for
-long-running production serving remains an open decision.
+## Product requirements
 
-## Confirmed owner requirements
+### PRODUCT-001 — Ship the complete investigation loop
 
-### R-001 — Ship a working producer, not only policy
+The repository must ship executable software, not only policy. The working
+product must cover research intake, recipe discovery or derivation, benchmark
+selection and execution, result validation, publication, retrieval, and human
+reporting.
 
-The repository's primary deliverable is executable software that produces
-useful serving-benchmark results. Documentation, schemas, and governance support
-that producer; they are not substitutes for it.
+### RECIPE-001 — Generate recipes from current sources and accumulated results
 
-### R-002 — Use one default cross-engine serving benchmark
+The product must not assume that a serving recipe already exists. Given a named
+deployment goal, it must:
 
-AIPerf is the default serving benchmark across llama.cpp, vLLM, and SGLang. A
-runtime-native tool is used only for a named question that the common harness
-cannot answer.
+1. Query prior results for the model, artifact, runtime, hardware, and intended
+   workload.
+2. Identify the smallest missing fact that could change the configuration or
+   deployment decision.
+3. Inspect current primary sources, model and artifact metadata, runtime support,
+   and applicable practitioner recipes.
+4. Preserve an applicable published recipe with its exact source and immutable
+   revision or date.
+5. When no published recipe applies, produce a separately identified local
+   derivation whose material choices and source inputs are explicit.
 
-### R-003 — Produce meaningful, comparable workloads
+An applicable published recipe is reproduced as published before it is modified.
+Do not combine flags from several sources into a synthetic published baseline.
+Each later variant records the exact delta and the measured reason for trying it.
 
-A benchmark must state the workload, token work, concurrency, duration or
-request count, context semantics, resource measurements, runtime circumstances,
-and completion or correctness result. A couple of unexplained short requests
-are not a useful qualification.
+Recipe status comes from runs. Useful states include discovered, applicable,
+reproduced, locally derived, qualified for a named use, rejected, and superseded.
+No document or agent assertion alone makes a recipe qualified or best.
 
-### R-004 — Return results to one shared authority
+### BENCHMARK-001 — Use declared benchmark standards
 
-Execution may occur on a Windows workstation, Blood Arrow, a Vast.ai guest, or
-another remote host. The design must return normalized results without a shared
-local database, per-host history database, or manual merging of competing
-authorities. Notion is the intended shared measurement and reporting surface.
+Benchmarks are named, versioned definitions declared before a run. Use an
+existing benchmark standard unless it cannot answer the named question. Creating
+a new standard requires a documented measurement gap and an explicit definition
+of the workload, tool, token semantics, schedule, completion rules, resource
+measurements, and validator.
 
-### R-005 — Preserve and publish the human report
+AIPerf is the default execution harness for serving benchmarks across llama.cpp,
+vLLM, and SGLang. The harness and the benchmark standard are different things:
+AIPerf executes a declared workload; it does not make unrelated workloads
+comparable. Results are directly comparable only when the applicable benchmark
+standard says they are, normally because they use the same definition and
+version with compatible conditions.
 
-The completed-run report structure is useful. It should be translated into a
-Notion Investigation template and linked to normalized Run records, not deleted
-because its first representation was Markdown. Existing completed reports must
-be preserved until their Notion replacement is real and verified.
+### RESULTS-001 — Ship one shared result reality
 
-### R-006 — Keep raw output bounded and addressable
+The repository must ship the schemas, clients, service, and integrations that
+turn locally produced run output into one shared result system. Every runner,
+recipe investigator, comparison tool, and report generator must read from or
+write through the same versioned contract. Do not create independent host
+histories that later require manual reconciliation.
 
-Do not put high-frequency telemetry streams or arbitrary raw JSON into Notion.
-Retain the raw benchmark outputs needed to reproduce or inspect a result and
-link them from the shared record.
+The implementation contract is [Shared results system specification](shared-results-system-spec.md).
 
-### R-007 — Do not describe LLM Rig as a control plane by default
+### REPORTING-001 — Publish normalized runs and human investigations
 
-The repository is not assumed to control the live serving fleet. If a component
-really performs control-plane work, its exact controlled resource and authority
-boundary must be named.
+Notion is the intended shared measurement and reporting surface. Normalized Run
+records contain measured and comparison-relevant fields. Notion Investigations
+explain what was tried, where and when it ran, what was learned, its limitations,
+and the next useful action, using related Run records rather than independently
+typed measurement values.
 
-### R-008 — Do not reduce host safety to generic capacity admission
+The completed-run report structure is input to the Notion Investigation
+template. Existing completed reports must be preserved until the replacement
+Notion record and report exist and have been verified.
 
-Blood Arrow and its Vast.ai service have an existing operational topology and
-ownership model. Benchmarking must inspect that live state and avoid disrupting
-commercial service, but the product workflow is not organized around an
-abstract `capacity available` gate. It may benchmark an existing endpoint,
-launch an isolated endpoint, or defer for a concrete conflict.
+### ARTIFACTS-001 — Retain bounded raw outputs outside Notion
 
-### R-009 — Maintain one requirements ledger continuously
+Do not place high-frequency telemetry streams or arbitrary raw JSON into Notion.
+The shared result system retains the benchmark exports and bounded diagnostic
+output required to inspect or recompute a result. Notion Run records reference
+those artifacts by stable URI and content hash.
 
-New owner requirements and corrections are written into this document as they
-are stated. The dated intake log below is the scratch surface; confirmed items
-are promoted into numbered requirements in the same document.
+## Open decisions
 
-### R-010 — Use legible, information-rich diagrams
-
-Architecture and workflow diagrams should use purposeful color and richer
-styling so implemented components, missing components, authorities, and data
-movement are visually distinguishable. Styling must clarify meaning rather than
-decorate the page.
-
-### R-011 — Recipe discovery is part of the shipped product
-
-LLM Rig must not assume that an executable recipe already exists. It must
-support the research and reasoning path that discovers a published recipe or
-derives a local candidate from current model metadata, runtime support, target
-hardware, intended workload, and prior measurements.
-
-### R-012 — Research begins with a named decision and coverage gap
-
-Research is selected by comparing the requested deployment or serving decision
-with the accumulated run history and current known sources. Investigate the
-smallest missing fact that could change the candidate recipe. Do not produce an
-open-ended literature search, context ladder, or configuration matrix merely
-because many parameters exist.
-
-### R-013 — Preserve published baselines and derived variants separately
-
-When an applicable published recipe exists, preserve its source, immutable
-revision or date, and first reproduction exactly as published. Do not combine
-flags from several sources into a synthetic baseline. A local recipe is a
-separately named derivation whose every meaningful delta has a reason tied to
-the target hardware, artifact, runtime, workload, or a measured failure.
-
-### R-014 — Recipe status comes from runs
-
-A recipe moves through explicit states such as discovered, applicable,
-reproduced, locally derived, qualified for a named workload, rejected, or
-superseded. A document or agent assertion cannot mark a recipe best or qualified;
-that status must be derived from validated runs on the named surface and
-workload.
-
-## Main constraint candidate — awaiting owner confirmation
-
-The primary constraint is closing the full knowledge loop without allowing an
-agent to invent a recipe or run an arbitrary experiment: deployment question ->
-prior-result query -> targeted current research -> sourced candidate -> measured
-run -> shared result -> next decision. Cross-engine comparability and reliable
-publication from remote or ephemeral hosts are constraints inside that larger
-loop, not the starting point.
-
-The current repository has an even more immediate delivery blocker: it contains
-policy but no runnable benchmark definition, runner, validator, publisher,
-Notion schema, or artifact transport. Until the producer path exists, the
-repository cannot fulfill its mission.
-
-## Open product decisions
-
-- Does LLM Rig own long-running serving deployment, or only profiles, endpoint
-  adapters, benchmark execution, validation, and publication?
-- Where does the outbound publication endpoint run?
-- What shared artifact service holds benchmark exports and bounded diagnostics?
-- What exact Notion Run properties and Investigation relations are required for
-  the first working vertical slice?
-- What is the transitional reporting rule until the Notion path is operational?
-- What executable interface expresses a deployment question and the comparison
-  or success condition it is meant to resolve?
-- Which sources are searched automatically for each model/runtime family, and
-  which require an explicitly delegated research investigation?
-- What is the machine-readable boundary between a published source recipe, a
-  locally derived recipe, and a host-bound serving profile?
+- What exact deployment-goal or serving-question input starts recipe research?
+- What is the initial registry of existing benchmark standards?
+- Which research sources can be queried deterministically, and when is an agent
+  investigation required?
+- What exact schema separates a published recipe, a locally derived recipe, and
+  a host-bound executable profile?
+- Which service hosts the shared-results API and artifact storage?
+- What exact Notion Run properties and Investigation relations form the first
+  vertical slice?
+- What is the transitional reporting rule until that vertical slice is live?
 
 ## Intake log
 
-### 2026-08-26
+### 2026-08-26 — Initial requirements discussion
 
-- Use color and richer styling in workflow diagrams.
-- Do not call the repository a control plane without defining what it actually
-  controls.
-- Maintain one requirements-based governing document containing both durable
-  requirements and scratch intake notes.
-- Focus the repository on the thing it must actually ship.
-- Remove the generic `capacity available` decision from the conceptual center
-  of the workflow; represent concrete serving and execution modes instead.
-- Confirm the mission and main constraint with the owner before turning the
-  current interpretation into settled architecture.
-- Recipe discovery and generation are part of the product; a completed serving
-  profile cannot be assumed as the first input.
-- Use the requested deployment decision and missing coverage in prior runs to
-  decide what to research.
-- Preserve an applicable published recipe exactly for its first reproduction;
-  keep locally derived variants and their reasons separate.
+- The repository must ship a working system rather than stop at policy.
+- Recipe research and generation occur before benchmark execution and are part
+  of the product.
+- Prior results and a named deployment question determine what to research.
+- Use AIPerf as the common serving-benchmark harness.
+- Return results to one shared authority and use Notion for normalized records
+  and human reports.
+
+### 2026-08-26 — Requirements-architecture correction
+
+- Removed control-plane terminology, host-capacity admission, requirements-log
+  maintenance, and diagram styling from the numbered product requirements.
+- Consolidated the duplicate benchmark requirements.
+- Removed the assumption that every useful workload must be comparable.
+- Declared that an existing benchmark standard is the default and that a new
+  standard requires a named measurement gap.
+- Replaced the abstract shared-authority statement with a requirement to ship a
+  shared-results specification and implementation used by every component.
