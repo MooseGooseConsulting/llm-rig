@@ -2,13 +2,32 @@
 
 A small, forward-looking lab for serving and evaluating local language models across distinct hardware surfaces.
 
+## Current status
+
+This repository currently defines policy and system boundaries. It does **not**
+yet ship a serving CLI, AIPerf runner, publication endpoint, Notion schema, or
+shared evidence store. The documentation describes the contract those pieces
+must satisfy; it must not be read as proof that they are deployed.
+
 ## Start here
 
 - [Architecture](docs/architecture.md) — the canonical project rules and repository boundary.
 - [Serving and benchmarking policy](docs/serving-and-benchmarking-policy.md) — the canonical serving, AIPerf, monitoring, persistence, and reporting contract.
 - [Inference hardware](docs/inference-hardware.md) — the available hardware surfaces and the question each one needs to answer.
-- [Run history](docs/run-history.md) — versioned run records and the rebuildable local DuckDB history.
+- [Run publication and authority](docs/run-history.md) — how a staged run becomes one shared Notion record backed by shared raw evidence.
 - [Agent instructions](AGENTS.md) — the short behavioral contract that remains safe in agent context.
+
+## Documentation map
+
+| Document | Owns | Does not own |
+| --- | --- | --- |
+| This README | Orientation and implementation status | Policy |
+| [Architecture](docs/architecture.md) | Invariants, authority boundaries, and repository scope | Backend procedures or data-field detail |
+| [Serving and benchmarking policy](docs/serving-and-benchmarking-policy.md) | Serving profiles, AIPerf rules, evidence classes, monitoring separation, and publication requirements | Publication transport detail or hardware inventory |
+| [Run publication and authority](docs/run-history.md) | Run shape, remote publication transport, retry semantics, and the one shared history | Benchmark selection or serving behavior |
+| [Inference hardware](docs/inference-hardware.md) | Surface inventory and current hardware questions | Launch recipes |
+| [GTX 1080 Ti economics](docs/gtx-1080-ti-economics.md) | One scoped hardware decision | General serving policy |
+| `AGENTS.md` and `CLAUDE.md` | Routing agents to the documents above | Independent rules |
 
 ## What will be added only when it is needed
 
@@ -17,8 +36,10 @@ A small, forward-looking lab for serving and evaluating local language models ac
 - `benchmarks/` — versioned AIPerf workload definitions with explicit token, request-schedule, validity, and concurrency semantics.
 - `tools/` — helpers that require an explicit profile or benchmark; no hidden fallback model.
 
-Run evidence, generated DuckDB history, model/runtime files, and secrets remain
-outside Git. Human investigation reports live in Notion and retain the run IDs
-and evidence states that support their claims.
+Local run staging, model/runtime files, and secrets remain outside Git. Once
+the publication system exists, normalized Run records live in one shared Notion
+database and immutable raw artifacts live in one configured shared evidence
+store. A local `run.json` is a transfer and recovery envelope, not a second
+history database.
 
 This page is only an orientation map. The canonical project rules live in [Architecture](docs/architecture.md).

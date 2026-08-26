@@ -13,10 +13,27 @@ inspect, not proof of current behavior. Import a legacy component only after
 checking its implementation and validating it against the current hardware,
 runtime, and workload.
 
-The serving and benchmarking path must continue to work when Kubernetes,
-PostgreSQL, FalkorDB, or another central service is unavailable. Those systems
-may become optional integration targets; none is a prerequisite for producing,
-preserving, querying, or reporting a run.
+Benchmark execution must continue when the shared publication path is
+temporarily unavailable: the runner preserves a bounded local staging directory
+and marks the run pending publication. That local copy is not shared history and
+must not be presented as a published result.
+
+Shared querying and reporting use exactly one normalized authority: the Notion
+Run database. Immutable AIPerf exports and bounded diagnostics live in exactly
+one configured shared evidence store and are linked from that Run record by URI
+and content hash. These are not peer histories: Notion determines which Runs and
+normalized fields are accepted; the evidence store provides the immutable
+artifacts used to audit or recompute them. Kubernetes, a legacy cluster address,
+PostgreSQL, DuckDB, FalkorDB, and host-local Markdown are not parallel
+measurement authorities.
+
+## Implementation status
+
+This document defines the target contract. The initial repository does not yet
+implement the serving adapters, runner, publication endpoint, Notion databases,
+or evidence store. Until those components exist and a run receives a publication
+receipt, the repository can describe a proposed workflow but cannot claim a
+centrally persisted benchmark result.
 
 ## Ongoing serving
 
@@ -141,11 +158,11 @@ host, guest, or commercial allocation is idle. Recovery actions and hard power
 resets belong to the hardware owner's runbook and are not ordinary benchmark
 steps.
 
-## Run artifacts and `run.json`
+## Local staging and `run.json`
 
-Every executed run produces a bounded run directory outside Git. Its durable
-interchange record is a versioned `run.json`, accompanied by an evidence
-manifest. The minimum contents are:
+Every executed run first produces a bounded staging directory outside Git. Its
+interchange and crash-recovery record is a versioned `run.json`, accompanied by
+an evidence manifest. The minimum contents are:
 
 - stable run ID, evidence class, status, timestamps, and executor;
 - serving profile identity and exact effective configuration;
@@ -156,46 +173,51 @@ manifest. The minimum contents are:
 - resource summaries with measurement method and sample coverage; and
 - relative evidence paths, content hashes, and parser/schema versions.
 
-Retain full AIPerf exports and bounded diagnostic logs in the run directory.
-Do not insert every telemetry sample into the relational history. Normalize
-per-request results and useful aggregates while retaining hashes and paths to
-their backing evidence.
+Retain full AIPerf exports and bounded diagnostic logs in the staging directory
+until publication is acknowledged. Do not turn every telemetry sample into a
+Notion row. Publish the normalized comparison fields and useful aggregates while
+retaining hashes and shared URIs for their backing evidence.
 
 An incomplete, failed, cancelled, load-only, point-sampled, inferred, or
-reconstructed result remains queryable with that validity state. It must not be
+reconstructed result may be published with that validity state. It must not be
 promoted to qualified evidence by reporting language.
 
-## Relational history
+## Publication and shared authority
 
-The immediate queryable history is a local-first DuckDB database built from
-`run.json` and its normalized measurements. The database is an index over
-durable run records, not the only copy of their meaning. It must be rebuildable
-from the run directories and must support idempotent ingestion by run ID and
-evidence hash.
+The runner does not write a historical database. A separate publisher moves a
+completed staging directory into the shared system through one outbound HTTPS
+path suitable for a Vast.ai guest or any other remote serving host. The
+publisher validates the record, stores the evidence, idempotently upserts the
+Notion Run, and returns a publication receipt. The detailed transport, retry,
+and receipt contract lives in [Run publication and authority](run-history.md).
 
-The initial relational shape should cover runs, profiles, artifacts, runtimes,
-workloads, request results, metric summaries, resource summaries, and evidence
-files. Add tables only for concrete queries that the current shape cannot
-answer.
+The publication endpoint's hosting provider, URL, Notion schema, evidence-store
+provider, retention policy, and credential route are unselected implementation
+decisions. Until they are selected and verified, a remote run can be preserved
+locally but cannot get “back to us” as a shared result. Documentation must say
+so rather than implying that an operator will somehow merge host-local stores.
 
-PostgreSQL may later receive replicated run data when a reliable shared service
-exists. Do not make PostgreSQL, a cluster address, or a graph database part of
-the local completion contract. FalkorDB or another graph is justified only by
-a concrete relationship query that DuckDB and the reporting layer cannot
-answer well.
+Do not introduce DuckDB, SQLite, or one database per runner. If the normalized
+history eventually needs SQL that Notion cannot provide, make a deliberate
+migration to one centrally hosted PostgreSQL authority behind the same
+publication API. Do not dual-write two canonical histories. Disposable analyst
+exports and caches are allowed only when they are clearly rebuildable and never
+described as authority.
 
-## Notion reporting
+## Notion authority and reporting
 
-Notion is the human-facing investigation and reporting surface. An
-Investigation explains the decision, evidence, interpretation, limitations,
-and next useful action. Related Run entries present headline facts and retain
-the corresponding run IDs and evidence states.
+The Notion Run database is the canonical normalized measurement registry. An
+Investigation explains the decision, evidence, interpretation, limitations, and
+next useful action. Related Run entries carry the comparison fields, run IDs,
+validity states, evidence classes, and immutable evidence links that support the
+Investigation.
 
-Generate measurement claims in Notion from normalized run data. Do not create
-independent numbers in prose, copy raw telemetry streams into Notion, or treat
-a narrative page as stronger evidence than its runs. Reconstructed historical
-work is allowed when labeled with its source and limitations.
+The publisher generates Run fields from the validated staged record; agents do
+not type independent measurement numbers into Investigation prose. Do not copy
+raw telemetry streams into Notion. Reconstructed historical work is allowed
+when labeled with its source and limitations.
 
 Human-readable Markdown reports do not live in this repository. Repository
-documentation defines the system and its policy; Notion carries investigation
-reports; run directories carry evidence; DuckDB supplies queryable history.
+documentation defines the system and its policy; Notion carries canonical Run
+records and Investigation reports; the shared evidence store carries immutable
+raw output; local run directories are temporary staging and recovery state.
