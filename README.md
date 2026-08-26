@@ -11,6 +11,7 @@ must satisfy; it must not be read as proof that they are deployed.
 
 ## Start here
 
+- [Requirements](docs/requirements.md) — the living owner-requirements ledger, mission candidate, delivery constraint, and open product decisions.
 - [Architecture](docs/architecture.md) — the canonical project rules and repository boundary.
 - [Serving and benchmarking policy](docs/serving-and-benchmarking-policy.md) — the canonical serving, AIPerf, monitoring, persistence, and reporting contract.
 - [Inference hardware](docs/inference-hardware.md) — the available hardware surfaces and the question each one needs to answer.
@@ -22,6 +23,7 @@ must satisfy; it must not be read as proof that they are deployed.
 | Document | Owns | Does not own |
 | --- | --- | --- |
 | This README | Orientation and implementation status | Policy |
+| [Requirements](docs/requirements.md) | Owner needs, wants, corrections, mission confirmation, and open product decisions | Architecture invented without owner confirmation |
 | [Architecture](docs/architecture.md) | Invariants, authority boundaries, and repository scope | Backend procedures or data-field detail |
 | [Serving and benchmarking policy](docs/serving-and-benchmarking-policy.md) | Serving profiles, AIPerf rules, executable benchmark requirements, monitoring separation, and publication requirements | Publication transport detail or hardware inventory |
 | [Run publication and authority](docs/run-history.md) | Run shape, remote publication transport, retry semantics, and the one shared history | Benchmark selection or serving behavior |
