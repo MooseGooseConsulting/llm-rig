@@ -24,11 +24,13 @@ confirmed requirements are satisfied; it does not invent the product mission.
 
 ## Mission candidate — awaiting owner confirmation
 
-LLM Rig should ship an executable, engine-neutral system that can take a named
-model, runtime, hardware surface, and workload; stand up or target the serving
-endpoint; run a meaningful AIPerf benchmark; validate and normalize the result;
-and publish the measurements, artifacts, and human-readable investigation into
-one shared destination.
+LLM Rig should ship an investigation system that can take a deployment goal or
+serving question; inspect prior measured results and current upstream sources;
+identify the smallest decision-relevant knowledge gaps; produce a sourced
+candidate recipe; stand up or target the serving endpoint; run a meaningful
+AIPerf benchmark; validate and normalize the result; and publish the
+measurements, artifacts, and human-readable investigation into one shared
+destination. Each completed result becomes input to the next recipe decision.
 
 The repository is not presumed to be the live serving control plane. It owns
 the portable product needed to produce comparable serving measurements and get
@@ -103,12 +105,45 @@ styling so implemented components, missing components, authorities, and data
 movement are visually distinguishable. Styling must clarify meaning rather than
 decorate the page.
 
+### R-011 — Recipe discovery is part of the shipped product
+
+LLM Rig must not assume that an executable recipe already exists. It must
+support the research and reasoning path that discovers a published recipe or
+derives a local candidate from current model metadata, runtime support, target
+hardware, intended workload, and prior measurements.
+
+### R-012 — Research begins with a named decision and coverage gap
+
+Research is selected by comparing the requested deployment or serving decision
+with the accumulated run history and current known sources. Investigate the
+smallest missing fact that could change the candidate recipe. Do not produce an
+open-ended literature search, context ladder, or configuration matrix merely
+because many parameters exist.
+
+### R-013 — Preserve published baselines and derived variants separately
+
+When an applicable published recipe exists, preserve its source, immutable
+revision or date, and first reproduction exactly as published. Do not combine
+flags from several sources into a synthetic baseline. A local recipe is a
+separately named derivation whose every meaningful delta has a reason tied to
+the target hardware, artifact, runtime, workload, or a measured failure.
+
+### R-014 — Recipe status comes from runs
+
+A recipe moves through explicit states such as discovered, applicable,
+reproduced, locally derived, qualified for a named workload, rejected, or
+superseded. A document or agent assertion cannot mark a recipe best or qualified;
+that status must be derived from validated runs on the named surface and
+workload.
+
 ## Main constraint candidate — awaiting owner confirmation
 
-The main constraint is not nominal GPU capacity. It is preserving one
-comparable measurement contract across heterogeneous engines and execution
-environments while reliably returning the result from remote or ephemeral
-hosts to one shared reporting surface.
+The primary constraint is closing the full knowledge loop without allowing an
+agent to invent a recipe or run an arbitrary experiment: deployment question ->
+prior-result query -> targeted current research -> sourced candidate -> measured
+run -> shared result -> next decision. Cross-engine comparability and reliable
+publication from remote or ephemeral hosts are constraints inside that larger
+loop, not the starting point.
 
 The current repository has an even more immediate delivery blocker: it contains
 policy but no runnable benchmark definition, runner, validator, publisher,
@@ -124,6 +159,12 @@ repository cannot fulfill its mission.
 - What exact Notion Run properties and Investigation relations are required for
   the first working vertical slice?
 - What is the transitional reporting rule until the Notion path is operational?
+- What executable interface expresses a deployment question and the comparison
+  or success condition it is meant to resolve?
+- Which sources are searched automatically for each model/runtime family, and
+  which require an explicitly delegated research investigation?
+- What is the machine-readable boundary between a published source recipe, a
+  locally derived recipe, and a host-bound serving profile?
 
 ## Intake log
 
@@ -139,3 +180,9 @@ repository cannot fulfill its mission.
   of the workflow; represent concrete serving and execution modes instead.
 - Confirm the mission and main constraint with the owner before turning the
   current interpretation into settled architecture.
+- Recipe discovery and generation are part of the product; a completed serving
+  profile cannot be assumed as the first input.
+- Use the requested deployment decision and missing coverage in prior runs to
+  decide what to research.
+- Preserve an applicable published recipe exactly for its first reproduction;
+  keep locally derived variants and their reasons separate.
