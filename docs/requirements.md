@@ -135,3 +135,13 @@ those artifacts by stable URI and content hash.
   standard requires a named measurement gap.
 - Replaced the abstract shared-authority statement with a requirement to ship a
   shared-results specification and implementation used by every component.
+
+### 2026-08-26 — Implementation-sequencing correction
+
+- Stop extending policy without an executable delivery plan.
+- Show the full workflow and distinguish existing, partial, missing, next-build,
+  and external components.
+- Build pipelines as end-to-end vertical slices rather than completing isolated
+  architecture layers.
+- Use the existing Qwen run and recoverable report as the first real publication
+  fixture, then execute an existing benchmark standard through the same path.

@@ -6,6 +6,7 @@ Before taking any project action:
 2. Read [docs/architecture.md](docs/architecture.md) and follow its invariant rules where they do not conflict with confirmed requirements.
 3. For serving, benchmarking, telemetry, monitoring, hardware, or deployment work, also read [docs/serving-and-benchmarking-policy.md](docs/serving-and-benchmarking-policy.md) and [docs/inference-hardware.md](docs/inference-hardware.md).
 4. For run persistence, publication, retrieval, or comparison work, read [docs/shared-results-system-spec.md](docs/shared-results-system-spec.md) and [docs/serving-and-benchmarking-policy.md](docs/serving-and-benchmarking-policy.md).
+5. For implementation sequencing, read [docs/implementation-plan.md](docs/implementation-plan.md) and execute its current vertical slice rather than adding another policy layer.
 
 Do not proceed on an unconfigured project task until the required document(s) above have been read.
 
