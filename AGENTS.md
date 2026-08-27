@@ -13,3 +13,25 @@ live in [docs/architecture.md](docs/architecture.md); the serving system's
 operational rules live in
 [docs/serving-and-benchmarking-policy.md](docs/serving-and-benchmarking-policy.md).
 Do not duplicate or diverge from either authority.
+
+## Notion authority
+
+Notion is the live authority for decisions, operating model, roadmaps, standing-rule rationale, and what agents may do. There is no Markdown mirror of Notion in this repository, and creating one is not an acceptable workaround. Read Notion live by these stable URLs before acting on anything that needs a decision.
+
+| Page | URL |
+|---|---|
+| Local AI Infrastructure (estate map, Repositories, Decisions) | https://app.notion.com/p/3c8c4d261ef881de8396fb44f69b32b4 |
+| Decisions database | https://app.notion.com/p/e23213fce2f94755af0400189541ac36 |
+| LLM Rig hub | https://app.notion.com/p/3c8c4d261ef8811fb645c4b81e56babb |
+| Mission and Operating Contract | https://app.notion.com/p/3c8c4d261ef88182b392ecc01e6f2bfb |
+| Record Authoring Contracts | https://app.notion.com/p/3c8c4d261ef881dfaa6bf203eac00952 |
+| Benchmark Standards | https://app.notion.com/p/3c8c4d261ef881ccb6e9f40614344a64 |
+| Capacity and KV Engineering | https://app.notion.com/p/3c8c4d261ef8816eb0c8fca1a8246ab9 |
+| Serving Recipes database | https://app.notion.com/p/f0c97a9ada644a46a0813f5e2fa03337 |
+| Investigations database | https://app.notion.com/p/c40b6d6341274792a5c33cb5f8584263 |
+
+### If Notion is unreachable
+
+- **Governance question — STOP and report.** If the answer would come from a page above, say "Notion is unreachable; the governing answer is unavailable" and stop. Do not infer the decision from Git, from a dated file, or from memory of a previous session.
+- **Pure operations — PROCEED.** Executing a documented procedure, running tests, or answering a code-fact question needs no Notion.
+- **Never mirror.** Do not copy Notion content into this repository "so it works offline".
