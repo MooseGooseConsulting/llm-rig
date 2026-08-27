@@ -199,3 +199,7 @@ work is allowed when labeled with its source and limitations.
 Human-readable Markdown reports do not live in this repository. Repository
 documentation defines the system and its policy; Notion carries investigation
 reports; run directories carry evidence; DuckDB supplies queryable history.
+
+See Notion's Record Authoring Contracts page for the authoring rules referenced
+above:
+<https://app.notion.com/p/3c8c4d261ef881dfaa6bf203eac00952>
