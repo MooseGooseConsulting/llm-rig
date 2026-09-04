@@ -48,6 +48,9 @@ deployment goal, it must:
 5. When no published recipe applies, produce a separately identified local
    derivation whose material choices and source inputs are explicit.
 
+The operational procedure that implements this discovery order is the recipe
+ladder in [Run playbook](run-playbook.md).
+
 An applicable published recipe is reproduced as published before it is modified.
 Do not combine flags from several sources into a synthetic published baseline.
 Each later variant records the exact delta and the measured reason for trying it.
@@ -145,3 +148,17 @@ those artifacts by stable URI and content hash.
   architecture layers.
 - Use the existing Qwen run and recoverable report as the first real publication
   fixture, then execute an existing benchmark standard through the same path.
+
+### 2026-09-04 — Reduce agent ceremony without loosening parameter selection
+
+- The owner asked that agent work stop requiring so much preparatory reading,
+  while parameter selection stays rigorous: use a recipe when one exists, and
+  otherwise reason from the recipes that do exist to select optimal parameters.
+- The owner's primary local target is the RTX 5090 workstation. Results must be
+  valid there and must also hold when the same work is later done on other
+  surfaces such as the RTX 3090, Blood Arrow, N5, or a rented GPU.
+- Response: added [Run playbook](run-playbook.md) as the single required read
+  before a run, added [Run manifest](run-manifest.md) for the declared
+  experiment and evidence bundle, and replaced the five-document reading list in
+  `AGENTS.md` with a two-tier rule (run work reads the playbook; authority edits
+  read the document being changed plus architecture).

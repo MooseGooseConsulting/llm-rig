@@ -72,6 +72,9 @@ Current reusable material is real but disconnected:
   executable definition yet.
 - The legacy corpus contains a candidate routine SPEED-Bench convention, but it
   has not been imported, verified, and made executable in LLM Rig.
+- The declared-experiment schema and the evidence-bundle layout are now
+  specified in [Run manifest](run-manifest.md). The Vertical Slice 1 runner must
+  accept that manifest as input and emit that bundle.
 
 ## What to implement next
 

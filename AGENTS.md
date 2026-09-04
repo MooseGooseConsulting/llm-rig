@@ -11,7 +11,9 @@ surface into the other. When implementation is requested, update stale Git behav
 and its concise repository-facing documentation; until then, distinguish intended
 from implemented behavior.
 
-Fetch the relevant stable hub before planning or documentation work:
+Fetch the one page that owns the subject you are working on; a run needs only
+the Serving Recipes database and, when a capacity question arises, Capacity and
+KV Engineering.
 
 - [**Local AI Infrastructure**](https://app.notion.com/p/3c8c4d261ef881de8396fb44f69b32b4)
   (`3c8c4d26-1ef8-81de-8396-fb44f69b32b4`) — ecosystem ownership, machines,
@@ -60,18 +62,18 @@ creating a second paraphrased corpus. Preserve
 reasoning, examples, counterexamples, provenance distinctions, and unresolved
 questions; a summary is orientation, not a substitute for the complete capture.
 
-Before taking any project action:
+Before taking any project action, read for the tier you are in.
 
-1. Read [docs/requirements.md](docs/requirements.md) as the implementation-facing
-   requirements snapshot, then reconcile it with the current Notion Mission and LLM
-   Rig pages. It is not the sole authority for owner intent. Do not silently promote
-   an open interpretation into architecture.
-2. Read [docs/architecture.md](docs/architecture.md) and follow its invariant rules where they do not conflict with confirmed requirements.
-3. For serving, benchmarking, telemetry, monitoring, hardware, or deployment work, also read [docs/serving-and-benchmarking-policy.md](docs/serving-and-benchmarking-policy.md) and [docs/inference-hardware.md](docs/inference-hardware.md).
-4. For run persistence, publication, retrieval, or comparison work, read [docs/shared-results-system-spec.md](docs/shared-results-system-spec.md) and [docs/serving-and-benchmarking-policy.md](docs/serving-and-benchmarking-policy.md).
-5. For implementation sequencing, read [docs/implementation-plan.md](docs/implementation-plan.md) and execute its current vertical slice rather than adding another policy layer.
+**Doing a run (bring-up, serving check, benchmark, tuning):** read
+[docs/run-playbook.md](docs/run-playbook.md). It links onward; read a linked
+document only when the step you are on needs it.
 
-Do not proceed on an unconfigured project task until the required document(s) above have been read.
+**Changing policy, architecture, the results spec, or the plan:** read the
+document you are changing plus [docs/architecture.md](docs/architecture.md), and
+fetch the one Notion page that owns that subject before editing.
+[docs/requirements.md](docs/requirements.md) is the implementation-facing
+requirements snapshot, not the sole authority for owner intent. Do not silently
+promote an open interpretation into architecture.
 
 This file is intentionally a narrow Codex entry point. Owner requirements and
 open product questions are maintained in the linked Notion knowledge surface;
@@ -81,5 +83,8 @@ Confirmed invariant project rules live in [docs/architecture.md](docs/architectu
 operational rules live in
 [docs/serving-and-benchmarking-policy.md](docs/serving-and-benchmarking-policy.md),
 with publication transport defined in
-[docs/shared-results-system-spec.md](docs/shared-results-system-spec.md). Do not duplicate or diverge from
+[docs/shared-results-system-spec.md](docs/shared-results-system-spec.md). The
+operational entry point for a run is
+[docs/run-playbook.md](docs/run-playbook.md), and the declared experiment and its
+evidence bundle are defined in [docs/run-manifest.md](docs/run-manifest.md). Do not duplicate or diverge from
 these authorities.
