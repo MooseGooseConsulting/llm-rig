@@ -11,27 +11,15 @@ must satisfy; it must not be read as proof that they are deployed.
 
 ## Start here
 
+- [Run playbook](docs/run-playbook.md) — the only required reading before a run.
+- [Run manifest](docs/run-manifest.md) — the declared experiment written before the run and the evidence bundle produced after it.
 - [Requirements](docs/requirements.md) — the living owner-requirements ledger, mission candidate, delivery constraint, and open product decisions.
 - [Architecture](docs/architecture.md) — the canonical project rules and repository boundary.
 - [Serving and benchmarking policy](docs/serving-and-benchmarking-policy.md) — the canonical serving, AIPerf, monitoring, persistence, and reporting contract.
 - [Inference hardware](docs/inference-hardware.md) — the available hardware surfaces and the question each one needs to answer.
 - [Shared results system specification](docs/shared-results-system-spec.md) — the concrete API, objects, publication transaction, query contract, and first end-to-end acceptance test.
 - [Implementation plan](docs/implementation-plan.md) — current system status, color-coded build map, vertical slices, and executable acceptance checks.
-- [Agent instructions](AGENTS.md) — the short behavioral contract that remains safe in agent context.
-
-## Documentation map
-
-| Document | Owns | Does not own |
-| --- | --- | --- |
-| This README | Orientation and implementation status | Policy |
-| [Requirements](docs/requirements.md) | Product mission, shipped capabilities, owner decisions, and open product decisions | Implementation architecture or protocol details |
-| [Architecture](docs/architecture.md) | Invariants, authority boundaries, and repository scope | Backend procedures or data-field detail |
-| [Serving and benchmarking policy](docs/serving-and-benchmarking-policy.md) | Serving profiles, AIPerf rules, executable benchmark requirements, monitoring separation, and publication requirements | Publication transport detail or hardware inventory |
-| [Shared results system specification](docs/shared-results-system-spec.md) | Shipped shared-results API, canonical objects, publication/query protocol, and acceptance criteria | Recipe selection or benchmark-standard design |
-| [Implementation plan](docs/implementation-plan.md) | Current gaps, next build sequence, vertical slices, and completion checks | Product requirements or permanent architecture authority |
-| [Inference hardware](docs/inference-hardware.md) | Surface inventory and current hardware questions | Launch recipes |
-| [GTX 1080 Ti economics](docs/gtx-1080-ti-economics.md) | One scoped hardware decision | General serving policy |
-| `AGENTS.md` and `CLAUDE.md` | Routing agents to the documents above | Independent rules |
+- [Agent instructions](AGENTS.md) — agent routing.
 
 ## What will be added only when it is needed
 

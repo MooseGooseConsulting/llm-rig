@@ -50,6 +50,10 @@ named combination of:
   available; and
 - ownership, shutdown, and recovery behavior.
 
+The procedure for choosing a profile's parameter values, including when to reuse
+an existing recipe and when to derive one, is the recipe ladder in
+[Run playbook](run-playbook.md).
+
 LLM Rig may support llama.cpp, vLLM, and SGLang through separate launch
 adapters, but they share one serving contract. Runtime adapters are responsible
 for starting, stopping, checking, and locating a server; they do not silently
@@ -168,6 +172,9 @@ an artifact manifest. The minimum contents are:
 - resource summaries with measurement method and sample coverage; and
 - relative artifact paths, content hashes, and parser/schema versions.
 
+The on-disk layout of that staging directory and the declared-experiment schema
+written before the run are defined in [Run manifest](run-manifest.md).
+
 Retain full AIPerf exports and bounded diagnostic logs in the staging directory
 until publication is acknowledged. Do not turn every telemetry sample into a
 Notion row. Publish the normalized comparison fields and useful aggregates while
@@ -187,10 +194,11 @@ record; its local stage remains `pending-publication` until a retry succeeds.
 
 The runner does not write a historical database. A separate publisher moves a
 completed staging directory into the shared system through one outbound HTTPS
-path suitable for a Vast.ai guest or any other remote serving host. The
-publisher validates the record, stores the artifacts, idempotently upserts the
-Notion Run, and returns a publication receipt. The detailed transport, retry,
-and receipt contract lives in the [Shared results system specification](shared-results-system-spec.md).
+path suitable for a Vast.ai guest or any other remote serving host. A run stays
+`pending-publication` until that publisher returns a receipt. The publication
+protocol, its endpoints, idempotency, retry behavior, and receipt contents are
+defined once in the
+[Shared results system specification](shared-results-system-spec.md).
 
 The publication endpoint's hosting provider, URL, Notion schema, artifact-store
 provider, retention policy, and credential route are unselected implementation

@@ -22,6 +22,8 @@ these design rules.
 
 | Thing | Lives here? | Purpose |
 | --- | --- | --- |
+| Run playbook | Yes | The operational entry point for a bring-up, serving check, benchmark, or tuning run |
+| Run manifest | Yes | The experiment declared before a run and the evidence bundle produced after it |
 | Investigation request | Yes | Deployment goal, serving question, success condition, and the missing fact the work is intended to resolve |
 | Recipe research and derivation | Yes | Current source findings, prior-result query, candidate applicability, and explicit derivation decisions |
 | Surface inventory | Yes | Known hardware shape, role, and the next question for each serving surface |
